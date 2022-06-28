@@ -683,12 +683,27 @@ void con_init(void)
 	gotoxy(ORIG_X,ORIG_Y);
 	set_trap_gate(0x21,&keyboard_interrupt);
 	outb_p(inb_p(0x21)&0xfd,0x21);
-	a=inb_p(0x61);
+        
+        /*Initialize the mouse*/
+        /*Set i8042*/
+        outb_p(0xA8,0x64);//enable mouse
+        outb_p(0xD4,0x64);
+        /*send 0xD4 to port 0x60, informing that the token sent to 0x60 is for mouse*/
+        outb_p(0xF4,0x60);//set the mouse, allowing sending data package to host automatically
+        /*send 0x60 to port 0x64, informing that the token sent to 0x60 is for i8042*/
+        outb_p(0x60,0x64);
+        outb_p(0x47,0x60);//set the reg of i8042,enable mouse interface and interrupt
+
+        set_trap_gate(0x2c,&mouse_interrupt);
+        /*sent OCW to 8259A to cancel the interrupt mask*/
+        outb_p(inb_p(0x21)&0xFB,0x21);
+        outb_p(inb_p(0xA1)&0xEF,0xA1);
+
+        a=inb_p(0x61);
 	outb_p(a|0x80,0x61);
 	outb(a,0x61);
         
-        /*Initialize the mouse*/
-        set_trap_gate(0x21,&mouse_interrupt);
+        
 }
 /* from bsd-net-2: */
 

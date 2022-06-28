@@ -350,5 +350,6 @@ void chr_dev_init(void)
 
 void readmouse(int mousecode)
 {
+        printk("do-read-mouse\n");
         
 }
