@@ -54,6 +54,7 @@
 #define NPAR 16
 
 extern void keyboard_interrupt(void);
+extern void mouse_interrupt(void);
 
 static unsigned char	video_type;		/* Type of display being used	*/
 static unsigned long	video_num_columns;	/* Number of text columns	*/
@@ -685,6 +686,9 @@ void con_init(void)
 	a=inb_p(0x61);
 	outb_p(a|0x80,0x61);
 	outb(a,0x61);
+        
+        /*Initialize the mouse*/
+        set_trap_gate(0x21,&mouse_interrupt);
 }
 /* from bsd-net-2: */
 
