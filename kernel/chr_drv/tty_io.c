@@ -24,6 +24,8 @@
 #include <linux/tty.h>
 #include <asm/segment.h>
 #include <asm/system.h>
+#include <asm/io.h>
+
 
 #define _L_FLAG(tty,f)	((tty)->termios.c_lflag & f)
 #define _I_FLAG(tty,f)	((tty)->termios.c_iflag & f)
@@ -348,8 +350,46 @@ void chr_dev_init(void)
 {
 }
 
+static unsigned char mouse_input_count=0;
+static unsigned char mouse_left_down;
+static unsigned char mouse_right_down;
+static unsigned char mouse_left_move;
 void readmouse(int mousecode)
 {
-        printk("do-read-mouse\n");
+        static unsigned char mouse_input_count=0;
+        static unsigned char mouse_left_down;
+        static unsigned char mouse_right_down;
+        //static unsigned char mouse_left_move;
+        //static unsigned char mouse_right_move;
+        //static unsigned char mouse_up_move;
+        //static unsigned char mouse_down_move;
+        static int x_sign =0;
+        static int y_sign =0;
+        static int x_position =444;
+        static int y_positon = 300;
+        if(mousecode == 0xFA)
+        {
+                mouse_input_count =1;
+                return 0;
+        }
+        switch(mouse_input_count++)
+        {
+                case 1:
+                        mouse_left_down = (mousecode & 0x1) ==0x1;
+                        mouse_right_down = (mousecode & 0x2) ==0x2;
+                        x_sign = (mousecode & 0x10)?0xffffff00:0;
+                        y_sign = (mousecode & 0x20)?0xffffff00:0;
+                        break;
+                case 2:
+                        x_position += (x_sign | mousecode);
+                        break;
+                case 3:
+                        y_positon += -(y_sign | mousecode);
+                        mouse_input_count =0;
+                        printk("do-read-mouse\n");
+                        break;      
+        }
+        
+        
         
 }
