@@ -689,6 +689,13 @@ void con_init(void)
         outb_p(0xA8,0x64);//enable mouse
         outb_p(0xD4,0x64);
         /*send 0xD4 to port 0x60, informing that the token sent to 0x60 is for mouse*/
+        // outb_p(0xF3,0x60);
+        // outb_p(0xC8,0x60);
+        // outb_p(0xF3,0x60);
+        // outb_p(0x64,0x60);
+        // outb_p(0xF3,0x60);
+        // outb_p(0x50,0x60);
+        // int type = inb_p(60);
         outb_p(0xF4,0x60);//set the mouse, allowing sending data package to host automatically
         /*send 0x60 to port 0x64, informing that the token sent to 0x60 is for i8042*/
         outb_p(0x60,0x64);

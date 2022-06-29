@@ -66,7 +66,7 @@ mouse_interrupt:
 	movl $0x10,%eax
 	mov %ax,%ds
 	mov %ax,%es
-	xor %al,%al		
+	xor %al,%al	
 	inb $0x60,%al
 	cmpb $0xe0,%al
 	je set_e0

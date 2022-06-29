@@ -26,7 +26,7 @@ CPP	=gcc -E -nostdinc -I../include
 
 OBJS  = sched.o system_call.o traps.o asm.o fork.o \
 	panic.o printk.o vsprintf.o sys.o exit.o \
-	signal.o mktime.o sleep.o dirent.o getcwd.o
+	signal.o mktime.o sleep.o dirent.o getcwd.o graphics.o
 
 kernel.o: $(OBJS)
 	$(LD) -r -o kernel.o $(OBJS)
@@ -48,6 +48,8 @@ dep:
 	(cd blk_drv; make dep)
 
 ### Dependencies:
+graphics.s graphics.o : graphics.c ../include/unistd.h ../include/linux/sched.h \
+  ../include/linux/tty.h ../include/asm/segment.h ../include/asm/system.h ../include/asm/io.h
 getcwd.s getcwd.o : dirent.c ../include/unistd.h ../include/linux/sched.h \
   ../include/sys/stat.h ../include/string.h ../include/linux/kernel.h \
   ../include/linux/fs.h ../include/fcntl.h ../include/const.h ../include/errno.h\
