@@ -50,6 +50,13 @@
 #define O_NLRET(tty)	_O_FLAG((tty),ONLRET)
 #define O_LCUC(tty)	_O_FLAG((tty),OLCUC)
 
+
+#define vga_graph_memstart 0xA0000
+#define vga_graph_memsize 64000
+#define cursor_side 6
+#define vga_width 320
+#define vga_height 200
+
 struct tty_struct tty_table[] = {
 	{
 		{ICRNL,		/* change incoming CR to NL */
@@ -354,19 +361,22 @@ static unsigned char mouse_input_count=0;
 static unsigned char mouse_left_down;
 static unsigned char mouse_right_down;
 static unsigned char mouse_left_move;
+static int x_sign =0;
+static int y_sign =0;
+int x_position = 20;
+int y_position = 30;
 void readmouse(int mousecode)
 {
-        static unsigned char mouse_input_count=0;
-        static unsigned char mouse_left_down;
-        static unsigned char mouse_right_down;
+        // static unsigned char mouse_input_count=0;
+        // static unsigned char mouse_left_down;
+        // static unsigned char mouse_right_down;
         //static unsigned char mouse_left_move;
         //static unsigned char mouse_right_move;
         //static unsigned char mouse_up_move;
         //static unsigned char mouse_down_move;
-        static int x_sign =0;
-        static int y_sign =0;
-        static int x_position =444;
-        static int y_positon = 300;
+        int i,j;
+        char *ptr = (char *)vga_graph_memstart;
+        
         if(mousecode == 0xFA)
         {
                 mouse_input_count =1;
@@ -379,16 +389,46 @@ void readmouse(int mousecode)
                         mouse_right_down = (mousecode & 0x2) ==0x2;
                         x_sign = (mousecode & 0x10)?0xffffff00:0;
                         y_sign = (mousecode & 0x20)?0xffffff00:0;
+                        cli();
+                        for(i=0;i<vga_graph_memsize;i++)
+                        {
+                                *ptr++=3;
+                        }
+                        sti();
                         break;
                 case 2:
-                        x_position += (x_sign | mousecode);
+                        x_position += (int)(x_sign | mousecode);
+                        if(x_position<0) x_position=0;
+                        if(x_position>vga_height) x_position = vga_height;
                         break;
                 case 3:
-                        y_positon += -(y_sign | mousecode);
+                        y_position += (int)( y_sign | mousecode);
+                        if(y_position<0) y_position=0;
+                        if(y_position>vga_width) y_position = vga_width;
                         mouse_input_count =0;
-                        printk("do-read-mouse\n");
+                        int MAX_X = (x_position+cursor_side>vga_height)?vga_height:x_position+cursor_side;
+                        int MAX_Y = (y_position+cursor_side>vga_height)?vga_width:y_position+cursor_side;
+                        //printk("do-read-mouse\n");
+                        cli();
+                        for(i = x_position-cursor_side;i<=MAX_X;i++)
+                        {
+                                for(j=y_position-cursor_side;j<=MAX_Y;j++)
+                                {
+                                        if(i<0)
+                                                i=0;
+                                        if(j<0)
+                                                j=0;
+
+                                        ptr = (char*)(vga_graph_memstart + j*vga_width + i);
+                                        *ptr=12;
+                                }
+                        }
+                        sti();
+                        
                         break;      
         }
+
+        
         
         
         
