@@ -156,6 +156,7 @@
 #define __NR_get_message 96
 #define __NR_post_message 97
 #define __NR_timer_create 98
+#define __NR_exit_graphics 99
 #define _syscall0(type,name) \
 type name(void) \
 { \
@@ -287,6 +288,7 @@ int clone(int (*fn)(void *),void*child_stack,int flags,void*arg);
 int get_message(struct message *msg);
 int post_message(struct message*msg);
 void timer_create(long milliseconds);
+void exit_graphics();
 
 #define __always_inline inline __attribute__((always_inline))
 

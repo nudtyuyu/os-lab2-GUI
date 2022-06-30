@@ -66,10 +66,17 @@ void readmouse(int mousecode)
                         if(mouse_left_down)
                         {
                                message *msg = malloc(sizeof(message));
-                               msg->mid = MSG_MOUSE_CLICK;
+                               msg->mid = MSG_MOUSE_CLICK_LEFT;
                                msg ->pid =-1;
                                sys_post_message(msg);
 
+                        }
+                        if(mouse_right_down)
+                        {
+                               message *msg = malloc(sizeof(message));
+                               msg->mid = MSG_MOUSE_CLICK_RIGHT;
+                               msg ->pid =-1;
+                               sys_post_message(msg);
                         }
                         mouse_input_count++;
                         break;

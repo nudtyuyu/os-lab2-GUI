@@ -73,3 +73,10 @@ void sys_init_graphics()
         }
 
 }
+
+
+void sys_exit_graphics()
+{
+        outb(0x06,0x3CE);
+        outb(0x04,0x3CF);//恢复字符模式
+}

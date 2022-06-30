@@ -1,0 +1,6 @@
+{
+        "files.associations": {
+                "message.h": "c",
+                "sched.h": "c"
+        }
+}

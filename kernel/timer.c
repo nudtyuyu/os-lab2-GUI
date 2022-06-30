@@ -35,6 +35,7 @@ void insert_user_timer(user_timer * timer)
                 UL=(user_timer_list*)malloc(sizeof(user_timer_list));
                 UserTimer_Init(UL);
         }
+        sli();
         if(UL->head == UL->rear)
         {
                 UL->head->next = timer;
@@ -49,6 +50,7 @@ void insert_user_timer(user_timer * timer)
                 timer->next = NULL;
         }
         UL->num++;
+        sti();
 
 }
 
@@ -67,6 +69,7 @@ void scan_user_timer_list()
                         msg->pid = -1;
                         msg->next = NULL;
                         sys_post_message(msg);
+                        tmp->usr_jiffies = tmp->init_jiffies;
                 }
                 tmp=tmp->next;
         }
