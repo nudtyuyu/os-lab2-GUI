@@ -1,5 +1,5 @@
 /*
- *  linux/lib/getcwd.c
+ *  /kernel/graphics.c
  *
  *  (C) 2022  Healer
  */

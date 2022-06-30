@@ -19,6 +19,7 @@
 #include "asm/segment.h"
 #include "errno.h"
 #include "signal.h"
+#include <timer.h>
 
 #define _S(nr) (1<<((nr)-1))
 #define _BLOCKABLE (~(_S(SIGKILL) | _S(SIGSTOP)))
@@ -304,9 +305,11 @@ void add_timer(long jiffies, void (*fn)(void))
 
 void do_timer(long cpl)
 {
+
 	extern int beepcount;
 	extern void sysbeepstop(void);
-
+        extern void scan_user_timer_list();
+        scan_user_timer_list();
 	if (beepcount)
 		if (!--beepcount)
 			sysbeepstop();

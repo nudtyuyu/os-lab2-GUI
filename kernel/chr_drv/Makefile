@@ -25,7 +25,7 @@ CPP	=gcc -E -nostdinc -I../../include
 	-c -o $*.o $<
 
 OBJS  = tty_io.o console.o keyboard.2.o serial.o rs_io.o \
-	tty_ioctl.o mouse.2.o
+	tty_ioctl.o mouse.2.o readmouse.o
 
 chr_drv.a: $(OBJS)
 	$(AR) rcs chr_drv.a $(OBJS)
@@ -48,6 +48,8 @@ dep:
 	cp tmp_make Makefile
 
 ### Dependencies:
+readmouse.s readmouse.o : readmouse.c ../../include/linux/sched.h ../../include/linux/tty.h\
+  ../../include/asm/segment.h ../../include/asm/system.h ../../include/asm/io.h ../../include/message.h
 console.s console.o : console.c ../../include/linux/sched.h \
   ../../include/linux/head.h ../../include/linux/fs.h \
   ../../include/sys/types.h ../../include/linux/mm.h ../../include/signal.h \

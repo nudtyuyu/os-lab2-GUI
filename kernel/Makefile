@@ -26,7 +26,8 @@ CPP	=gcc -E -nostdinc -I../include
 
 OBJS  = sched.o system_call.o traps.o asm.o fork.o \
 	panic.o printk.o vsprintf.o sys.o exit.o \
-	signal.o mktime.o sleep.o dirent.o getcwd.o graphics.o
+	signal.o mktime.o sleep.o dirent.o getcwd.o graphics.o\
+	message.o timer.o
 
 kernel.o: $(OBJS)
 	$(LD) -r -o kernel.o $(OBJS)
@@ -48,6 +49,12 @@ dep:
 	(cd blk_drv; make dep)
 
 ### Dependencies:
+timer.s timer.o : timer.c ../include/unistd.h ../include/linux/sched.h \
+  ../include/linux/tty.h ../include/asm/segment.h ../include/asm/system.h ../include/asm/io.h\
+  ../include/message.h ../include/timer.h
+message.s message.o : message.c ../include/unistd.h ../include/linux/sched.h \
+  ../include/linux/tty.h ../include/asm/segment.h ../include/asm/system.h ../include/asm/io.h\
+  ../include/message.h
 graphics.s graphics.o : graphics.c ../include/unistd.h ../include/linux/sched.h \
   ../include/linux/tty.h ../include/asm/segment.h ../include/asm/system.h ../include/asm/io.h
 getcwd.s getcwd.o : dirent.c ../include/unistd.h ../include/linux/sched.h \
@@ -57,7 +64,7 @@ getcwd.s getcwd.o : dirent.c ../include/unistd.h ../include/linux/sched.h \
 dirent.s dirent.o : dirent.c ../include/unistd.h ../include/linux/sched.h \
   ../include/sys/stat.h ../include/string.h ../include/linux/kernel.h
 sleep.s sleep.o : sleep.c ../include/errno.h ../include/signal.h \
-  ../include/unistd.h ../include/linux/sched.h
+  ../include/unistd.h ../include/linux/sched.h ../include/asm/system.h
 
 exit.s exit.o : exit.c ../include/errno.h ../include/signal.h \
   ../include/sys/types.h ../include/sys/wait.h ../include/linux/sched.h \
@@ -78,7 +85,7 @@ sched.s sched.o : sched.c ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/sys/types.h ../include/linux/mm.h \
   ../include/signal.h ../include/linux/kernel.h ../include/linux/sys.h \
   ../include/linux/fdreg.h ../include/asm/system.h ../include/asm/io.h \
-  ../include/asm/segment.h 
+  ../include/asm/segment.h ../include/timer.h
 signal.s signal.o : signal.c ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/sys/types.h ../include/linux/mm.h \
   ../include/signal.h ../include/linux/kernel.h ../include/asm/segment.h 

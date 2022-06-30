@@ -292,4 +292,18 @@ int sys_umask(int mask)
 	return (old);
 }
 
+long sys_mmap(void*start,size_t len,int prot,int flags,int fd,off_t off)
+{
+
+}
+int sys_munmap(void*start,size_t len)
+{
+
+}
+int sys_clone(int (*fn)(void *),void*child_stack,int flags,void*arg)
+{
+        
+}
+
+
 

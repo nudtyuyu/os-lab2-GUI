@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <linux/sched.h>
+#include <asm/system.h>
 
 
 
@@ -112,17 +113,19 @@ void handler(int sig)
 
 unsigned int sys_sleep(unsigned int seconds)
 {
-        
+        cli();
         int old_blocked = current->blocked;
         current->blocked = current->blocked & (1<<(SIGALRM-1));
+        sti();
         sys_alarm(seconds);
         sys_pause();
         if(sys_signal(SIGALRM,SIG_IGN)==-1)
         {
                 return -1;
         }
-        
+        cli();
         current->blocked = old_blocked;
+        sti();
         return 0;
 }
 
