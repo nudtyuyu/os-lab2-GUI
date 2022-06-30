@@ -149,6 +149,13 @@
 #define __NR_pipe2      89
 #define __NR_getdents   88
 #define __NR_sleep      90
+#define __NR_init_graphics 92
+#define __NR_mmap 93
+#define __NR_munmap 94
+#define __NR_clone 95
+#define __NR_get_message 96
+#define __NR_post_message 97
+#define __NR_timer_create 98
 #define _syscall0(type,name) \
 type name(void) \
 { \
@@ -273,6 +280,14 @@ int getdents(unsigned int fd, struct linux_dirent *dirp, unsigned int
 count);
 unsigned int sleep(unsigned int seconds);
 long getcwd(char * buf, size_t size);
+void init_graphics();
+long mmap(void*start,size_t len,int prot,int flags,int fd,off_t off);
+int munmap(void*start,size_t len);
+int clone(int (*fn)(void *),void*child_stack,int flags,void*arg);
+int get_message(struct message *msg);
+int post_message(struct message*msg);
+void timer_create(long milliseconds);
+
 #define __always_inline inline __attribute__((always_inline))
 
 #endif
