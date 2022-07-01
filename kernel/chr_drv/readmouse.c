@@ -57,12 +57,12 @@ void readmouse(int mousecode)
                         y_sign = (mousecode & 0x20)?0xffffff00:0;
                         x_overflow = (mousecode & 0x40);
                         y_overflow = (mousecode & 0x80);
-                        cli();
-                        for(i=0;i<vga_graph_memsize;i++)
-                        {
-                                *ptr++=3;
-                        }
-                        sti();
+                        // cli();
+                        // for(i=0;i<vga_graph_memsize;i++)
+                        // {
+                        //         *ptr++=3;
+                        // }
+                        // sti();
                         if(mouse_left_down)
                         {
                                message *msg = malloc(sizeof(message));
@@ -107,7 +107,7 @@ void readmouse(int mousecode)
                         break;
                 case 3:
                         
-                        cli();
+                        //cli();
                          
                         y_position -= (int)( y_sign | mousecode);
                         if(mouse_left_down || mouse_right_down)
@@ -146,17 +146,17 @@ void readmouse(int mousecode)
                         
                         //printk("do-read-mouse\n");
                         
-                        for(i = x_position-cursor_side;i<=MAX_X;i++)
-                        {
-                                for(j=y_position-cursor_side;j<=MAX_Y;j++)
-                                {
+                        // for(i = x_position-cursor_side;i<=MAX_X;i++)
+                        // {
+                        //         for(j=y_position-cursor_side;j<=MAX_Y;j++)
+                        //         {
                                         
 
-                                        ptr = (char*)(vga_graph_memstart + j*vga_width + i);
-                                        *ptr=12;
-                                }
-                        }
-                        sti();
+                        //                 ptr = (char*)(vga_graph_memstart + j*vga_width + i);
+                        //                 *ptr=12;
+                        //         }
+                        // }
+                        //sti();
                         
                         break;  
                 // case 4:

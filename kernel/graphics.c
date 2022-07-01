@@ -12,6 +12,8 @@
 #include <asm/system.h>
 #include <asm/io.h>
 #include <unistd.h>
+#include <adv.h>
+
 
 
 /*Display mouse*/
@@ -57,20 +59,20 @@ void sys_init_graphics()
 
         /*Display the mouse*/
                         
-        int i,j;
-        char *ptr = (char *)vga_graph_memstart;
-        for(i=0;i<vga_graph_memsize;i++)
-        {
-                *ptr++=3;
-        }
-        for(i = x_position-cursor_side;i<=x_position+cursor_side;i++)
-        {
-                for(j=y_position-cursor_side;j<=y_position+cursor_side;j++)
-                {
-                         ptr = (char*)(vga_graph_memstart + j*vga_width + i);
-                        *ptr=12;
-                }
-        }
+        // int i,j;
+        // char *ptr = (char *)vga_graph_memstart;
+        // for(i=0;i<vga_graph_memsize;i++)
+        // {
+        //         *ptr++=3;
+        // }
+        // for(i = x_position-cursor_side;i<=x_position+cursor_side;i++)
+        // {
+        //         for(j=y_position-cursor_side;j<=y_position+cursor_side;j++)
+        //         {
+        //                  ptr = (char*)(vga_graph_memstart + j*vga_width + i);
+        //                 *ptr=12;
+        //         }
+        // }
 
 }
 
@@ -78,5 +80,38 @@ void sys_init_graphics()
 void sys_exit_graphics()
 {
         outb(0x06,0x3CE);
-        outb(0x04,0x3CF);//恢复字符模式
+        outb(0x0c,0x3CF);//恢复字符模式
+}
+
+
+void sys_repaint(int count,object*obj)
+{
+        cli();
+        object *tmp = (object *)malloc(count*sizeof(object));
+        int i,j;
+        int x=0;
+        char *ptr = (char *)vga_graph_memstart;
+        for(i=0;i<count*sizeof(object);i++)
+        {
+                unsigned char c =get_fs_byte(((char*)(char*)(obj)+i));
+                *((char*)tmp+i) = c;
+        }
+        
+        for(i=0;i<vga_graph_memsize;i++)
+        {
+                *ptr++=3;
+        }
+        for(x=0;x<count;x++)
+        {
+                for(i = tmp[x].posx;i<=tmp[x].posx+tmp[x].width;i++)
+                {
+                        for(j=tmp[x].posy;j<=tmp[x].posy+tmp[x].height;j++)
+                        {
+                                ptr = (char*)(vga_graph_memstart + j*vga_width + i);
+                                *ptr=tmp[x].color;
+                        }
+                }
+        }
+        sti();
+
 }

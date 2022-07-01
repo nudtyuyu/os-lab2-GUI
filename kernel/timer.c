@@ -15,6 +15,8 @@ void UserTimer_Init(user_timer_list *L)
 {
         L->head = (user_timer*)malloc(sizeof(user_timer));
         L->rear = L->head;
+        L->head->next =NULL;
+        L->num =0;
 }
 
 void sys_timer_create(long milliseconds)
@@ -35,7 +37,7 @@ void insert_user_timer(user_timer * timer)
                 UL=(user_timer_list*)malloc(sizeof(user_timer_list));
                 UserTimer_Init(UL);
         }
-        sli();
+        cli();
         if(UL->head == UL->rear)
         {
                 UL->head->next = timer;
@@ -59,19 +61,22 @@ void scan_user_timer_list()
         if(UL==NULL)
                 return;
         user_timer *tmp = UL->head->next;
+        
         while(tmp)
         {
+                
                 tmp->usr_jiffies--;
                 if(tmp->usr_jiffies==0)
                 {
+                        tmp->usr_jiffies = tmp->init_jiffies;
                         message *msg = (message*)malloc(sizeof(message));
                         msg->mid = USER_TIMER_UP;
                         msg->pid = -1;
                         msg->next = NULL;
                         sys_post_message(msg);
-                        tmp->usr_jiffies = tmp->init_jiffies;
+                        
                 }
                 tmp=tmp->next;
         }
-        UL->rear->usr_jiffies--;
+        //UL->rear->usr_jiffies--;
 }

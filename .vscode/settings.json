@@ -1,6 +1,7 @@
 {
         "files.associations": {
                 "message.h": "c",
-                "sched.h": "c"
+                "sched.h": "c",
+                "typeinfo": "c"
         }
 }

@@ -102,6 +102,7 @@ extern int sys_get_message();
 extern int sys_post_message();
 extern void sys_timer_create();
 extern void sys_exit_graphics();
+extern void sys_repaint();
 
 fn_ptr sys_call_table[] = { sys_setup, sys_exit, sys_fork, sys_read,
 sys_write, sys_open, sys_close, sys_waitpid, sys_creat, sys_link,
@@ -120,7 +121,7 @@ sys_setrlimit, sys_getrlimit, sys_getrusage, sys_gettimeofday,
 sys_settimeofday, sys_getgroups, sys_setgroups, sys_select, sys_symlink,
 sys_lstat, sys_readlink, sys_uselib, sys_execve2,sys_getdents, sys_pipe2,
 sys_sleep,sys_getcwd,sys_init_graphics,sys_mmap,sys_munmap,sys_clone,
-sys_get_message,sys_post_message,sys_timer_create,sys_exit_graphics};
+sys_get_message,sys_post_message,sys_timer_create,sys_exit_graphics,sys_repaint};
 
 /* So we don't have to do any more manual updating.... */
 int NR_syscalls = sizeof(sys_call_table)/sizeof(fn_ptr);

@@ -58,7 +58,7 @@ sa_mask = 4
 sa_flags = 8
 sa_restorer = 12
 
-nr_system_calls = 100  /* 72 */
+nr_system_calls = 101  /* 72 */
 
 /*
  * Ok, I get parallel printer interrupts while using the floppy for some
@@ -92,9 +92,9 @@ system_call:
 	movl $0x17,%edx		# fs points to local data space
 	mov %dx,%fs
 
-	pushl %eax   #by wyj
-	call print_nr
-	popl %eax
+	#pushl %eax   #by wyj
+	#call print_nr
+	#popl %eax
 
 	call sys_call_table(,%eax,4)
 	pushl %eax
