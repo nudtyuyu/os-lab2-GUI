@@ -156,7 +156,7 @@ void readmouse(int mousecode)
                         //                 *ptr=12;
                         //         }
                         // }
-                        //sti();
+                        // sti();
                         
                         break;  
                 // case 4:
