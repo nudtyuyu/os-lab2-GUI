@@ -1,6 +1,6 @@
 # os-lab2-GUI
 Add GUI features to Linux-0.11
-在os-lab1-syscall的基础上，给Linux0.11添加了鼠标驱动和图形界面功能，并设计了简单的马里奥小游戏用于测试功能实现效果
+在os-lab1-syscall的基础上，给Linux0.11添加了鼠标驱动和图形界面功能，并设计了简单的马里奥小游戏用于测试功能实现效果\\
 Linux-0.11在lab1中添加syscall之后的源码项目链接：<https://github.com/nudtyuyu/os-lab1-syscall>
 
 ### 本项目实现的功能
