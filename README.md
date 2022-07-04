@@ -12,6 +12,7 @@ Linux-0.11在lab1中添加syscall之后的源码项目链接：<https://github.c
 ####  (3) 消息驱动
 `kernel/message.c`
 `include/message.h`
+`kernel/timer.c`
 ####  (4) 应用程序-mygame:Easy Mario
 `mygame/`
 
