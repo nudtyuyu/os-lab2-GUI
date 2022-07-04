@@ -159,6 +159,7 @@
 #define __NR_timer_create 98
 #define __NR_exit_graphics 99
 #define __NR_repaint 100
+#define __NR_timer_destroy 101
 #define _syscall0(type,name) \
 type name(void) \
 { \
@@ -292,7 +293,7 @@ int post_message(struct message*msg);
 void timer_create(long milliseconds);
 void exit_graphics();
 void repaint(int count,struct objects* obj);
-
+int timer_destroy(int pid);
 #define __always_inline inline __attribute__((always_inline))
 
 #endif
